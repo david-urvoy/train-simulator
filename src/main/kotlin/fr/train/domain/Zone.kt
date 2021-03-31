@@ -1,5 +1,6 @@
 package fr.train.domain
 
+import fr.train.core.containsOnly
 import fr.train.domain.Station.*
 
 enum class Zone(vararg stations: Station) {
@@ -20,15 +21,13 @@ enum class Zone(vararg stations: Station) {
 
 }
 
-private fun Pair<Zone, Zone>.containsOnly(vararg zones: Zone) = zones.contains(first) && zones.contains(second)
-
-fun computeTravel(zones: Pair<Zone, Zone>): Double = when {
-    zones.containsOnly(Zone.Zone1, Zone.Zone2) -> 2.4
-    zones.containsOnly(Zone.Zone3, Zone.Zone4) -> 2.0
-    zones.containsOnly(Zone.Zone1, Zone.Zone2, Zone.Zone3) -> 2.8
-    zones.containsOnly(Zone.Zone1, Zone.Zone2, Zone.Zone4) -> 3.0
-    else -> throw RuntimeException("There is at least one unknown zone: $zones")
+fun Pair<Zone, Zone>.travelPrice(): Double = when {
+    containsOnly(Zone.Zone1, Zone.Zone2) -> 2.4
+    containsOnly(Zone.Zone3, Zone.Zone4) -> 2.0
+    containsOnly(Zone.Zone1, Zone.Zone2, Zone.Zone3) -> 2.8
+    containsOnly(Zone.Zone1, Zone.Zone2, Zone.Zone4) -> 3.0
+    else -> throw RuntimeException("There is at least one unknown zone: $this")
 }
 
-fun computeTravel(vararg zones: Zone) = if (zones.size == 2) computeTravel(zones[0] to zones[1])
+fun computeTravelPrice(vararg zones: Zone): Double = if (zones.size == 2) (zones[0] to zones[1]).travelPrice()
 else throw RuntimeException("Travel can only occur between a departure zone and a destination zone")
