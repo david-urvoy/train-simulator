@@ -2,7 +2,11 @@ package fr.train.domain
 
 import fr.train.core.containsOnly
 import fr.train.domain.Station.*
+import fr.train.domain.Zone.*
 
+/**
+ * Representation of a city Zone delimiting
+ */
 enum class Zone(vararg stations: Station) {
     Zone1(A, B),
     Zone2(C, D, E),
@@ -15,19 +19,17 @@ enum class Zone(vararg stations: Station) {
         this.stations = setOf(*stations)
     }
 
-    override fun toString(): String {
-        return "$name: $stations"
-    }
-
 }
 
-fun Pair<Zone, Zone>.travelPrice(): Double = when {
-    containsOnly(Zone.Zone1, Zone.Zone2) -> 2.4
-    containsOnly(Zone.Zone3, Zone.Zone4) -> 2.0
-    containsOnly(Zone.Zone1, Zone.Zone2, Zone.Zone3) -> 2.8
-    containsOnly(Zone.Zone1, Zone.Zone2, Zone.Zone4) -> 3.0
+val mostExpensiveTravel = Zone1 to Zone4
+
+fun Pair<Zone, Zone>.travelPrice(): Int = when {
+    containsOnly(Zone1, Zone2) -> 240
+    containsOnly(Zone3, Zone4) -> 200
+    containsOnly(Zone1, Zone2, Zone3) -> 280
+    containsOnly(Zone1, Zone2, Zone4) -> 300
     else -> throw RuntimeException("There is at least one unknown zone: $this")
 }
 
-fun computeTravelPrice(vararg zones: Zone): Double = if (zones.size == 2) (zones[0] to zones[1]).travelPrice()
-else throw RuntimeException("Travel can only occur between a departure zone and a destination zone")
+infix fun Pair<Zone, Zone>.orIfCheaper(other: Pair<Zone, Zone>) =
+    (if (travelPrice() <= other.travelPrice()) this else other)
