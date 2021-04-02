@@ -3,13 +3,16 @@ package fr.train.api
 import fr.train.domain.Customer
 import fr.train.domain.Station.*
 import fr.train.domain.Travel
+import net.joshka.junit.json.params.JsonFileSource
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import javax.json.JsonObject
 
-class TravelUnitTest {
+class DeserializerUnitTest {
 
-    @Test
-    fun `should convert TravelInputs to domain Customers appropriately`() {
+    @ParameterizedTest
+    @JsonFileSource(resources = ["/input/BasicTestCase.json"])
+    fun `should convert TravelInputs to domain Customers appropriately`(input: JsonObject) {
         // GIVEN
         val expected: List<Customer> = listOf(
             Customer(
@@ -20,19 +23,9 @@ class TravelUnitTest {
             ),
             Customer(2, listOf(Travel(H to I, 9873)))
         )
-        val input = SubwayData(
-            listOf(
-                CheckIn(2425, 1, A),
-                CheckIn(7849, 1, C),
-                CheckIn(9873, 2, H),
-                CheckIn(897, 1, G),
-                CheckIn(81192, 2, I),
-                CheckIn(9877, 1, F)
-            )
-        )
 
         // WHEN
-        val customers = input.toCustomers()
+        val customers = parseJson(input.toString())
 
         // THEN
         assertThat(customers)

@@ -1,0 +1,8 @@
+{
+  "taps" : [ {
+    "unixTimestamp" : 1,
+    "customerId" : 1,
+    "station" : "A"
+  }, {
+    "unixTimestamp" : 2,
+    "custo

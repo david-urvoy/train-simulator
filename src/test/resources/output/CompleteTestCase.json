@@ -1,0 +1,88 @@
+{
+  "customerSummaries": [
+    {
+      "customerId": 2,
+      "totalCostInCents": 740,
+      "trips": [
+        {
+          "stationStart": "H",
+          "stationEnd": "B",
+          "startedJourneyAt": 10,
+          "costInCents": 300,
+          "zoneFrom": 4,
+          "zoneTo": 1
+        },
+        {
+          "stationStart": "D",
+          "stationEnd": "C",
+          "startedJourneyAt": 400,
+          "costInCents": 240,
+          "zoneFrom": 2,
+          "zoneTo": 2
+        },
+        {
+          "stationStart": "E",
+          "stationEnd": "F",
+          "startedJourneyAt": 1000,
+          "costInCents": 200,
+          "zoneFrom": 3,
+          "zoneTo": 3
+        }
+      ]
+    },
+    {
+      "customerId": 1,
+      "totalCostInCents": 1460,
+      "trips": [
+        {
+          "stationStart": "A",
+          "stationEnd": "B",
+          "startedJourneyAt": 246343,
+          "costInCents": 240,
+          "zoneFrom": 1,
+          "zoneTo": 1
+        },
+        {
+          "stationStart": "C",
+          "stationEnd": "A",
+          "startedJourneyAt": 2467436,
+          "costInCents": 240,
+          "zoneFrom": 2,
+          "zoneTo": 1
+        },
+        {
+          "stationStart": "C",
+          "stationEnd": "F",
+          "startedJourneyAt": 2467438,
+          "costInCents": 200,
+          "zoneFrom": 3,
+          "zoneTo": 3
+        },
+        {
+          "stationStart": "F",
+          "stationEnd": "C",
+          "startedJourneyAt": 2467449,
+          "costInCents": 200,
+          "zoneFrom": 3,
+          "zoneTo": 3
+        },
+        {
+          "stationStart": "A",
+          "stationEnd": "F",
+          "startedJourneyAt": 2467476,
+          "costInCents": 280,
+          "zoneFrom": 1,
+          "zoneTo": 3
+        },
+        {
+          "stationStart": "B",
+          "stationEnd": "H",
+          "startedJourneyAt": 2469996,
+          "costInCents": 300,
+          "zoneFrom": 1,
+          "zoneTo": 4
+        }
+      ]
+    }
+  ]
+}

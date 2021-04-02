@@ -1,29 +1,52 @@
 package fr.train.api
 
-import com.google.gson.Gson
-import fr.train.spi.computeTravels
+import fr.train.spi.computeToOverview
 import net.joshka.junit.json.params.JsonFileSource
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import javax.json.JsonObject
 
 class SubwayIntegrationTest {
 
     @ParameterizedTest
-    @JsonFileSource(resources = ["/CandidateInputExample.json"])
-    fun read(input: JsonObject) {
-        Gson().fromJson(input.toString(), SubwayData::class.java)
-            .let { Gson().toJson(it.toCustomers().map { customer -> customer.computeTravels() }) }
-            .also { print(it) }
+    @JsonFileSource(resources = ["/input/CandidateInputExample.json"])
+    fun `should compute test case appropriately`(input: JsonObject) {
+        // WHEN
+        parseJson(input.toString())
+            .computeToOverview()
+            .also {
+                // THEN
+                assertThat(it).isEqualToNormalizingWhitespace((javaClass::getResource)("/output/CandidateOutputExample.json").readText())
+            }
+    }
+
+    @Test
+    fun `should throw explicit exception on invalid JSON`() {
+        assertThrows(RuntimeException::class.java)
+        { parseJson((javaClass::getResource)("/input/InvalidJson.json").readText()) }
+            .also { assertThat(it.message).isEqualTo("Invalid JSON !") }
     }
 
     @ParameterizedTest
-    @JsonFileSource(resources = ["/CompleteTestCase.json"])
-    fun `dead traveller`(input: JsonObject) {
-        Gson().fromJson(input.toString(), SubwayData::class.java)
-            .let { Gson().toJson(it.toCustomers().map { customer -> customer.computeTravels() }) }
-            .also { print(it) }
-            .also { assertThat(it).isEqualTo("[{\"customerId\":1,\"totalCostInCents\":1460,\"trips\":[{\"stationStart\":\"A\",\"stationEnd\":\"B\",\"startedJourneyAt\":246343,\"costInCents\":240,\"zoneFrom\":1,\"zoneTo\":1},{\"stationStart\":\"C\",\"stationEnd\":\"A\",\"startedJourneyAt\":2467436,\"costInCents\":240,\"zoneFrom\":2,\"zoneTo\":1},{\"stationStart\":\"C\",\"stationEnd\":\"F\",\"startedJourneyAt\":2467438,\"costInCents\":200,\"zoneFrom\":3,\"zoneTo\":3},{\"stationStart\":\"F\",\"stationEnd\":\"C\",\"startedJourneyAt\":2467449,\"costInCents\":200,\"zoneFrom\":3,\"zoneTo\":3},{\"stationStart\":\"A\",\"stationEnd\":\"F\",\"startedJourneyAt\":2467476,\"costInCents\":280,\"zoneFrom\":1,\"zoneTo\":3},{\"stationStart\":\"B\",\"stationEnd\":\"H\",\"startedJourneyAt\":2469996,\"costInCents\":300,\"zoneFrom\":1,\"zoneTo\":4}]}]") }
+    @JsonFileSource(resources = ["/input/CompleteTestCase.json"])
+    fun `should compute complete test case appropriately`(input: JsonObject) {
+        // WHEN
+        parseJson(input.toString())
+            .computeToOverview()
+            .also {
+                // THEN
+                assertThat(it).isEqualToNormalizingWhitespace((javaClass::getResource)("/output/CompleteTestCase.json").readText())
+            }
+    }
+
+    @ParameterizedTest
+    @JsonFileSource(resources = ["/input/LostTraveler.json"])
+    fun `should throw an exception if each customer entry does not match an exit`(input: JsonObject) {
+        assertThrows(RuntimeException::class.java)
+        { parseJson(input.toString()) }
+            .also { assertThat(it.message).isEqualTo("At least one customer seem to be lost in the subway ! (Registered a starting point but no exit...)") }
     }
 
 }
