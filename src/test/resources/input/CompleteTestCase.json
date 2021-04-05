@@ -26,6 +26,11 @@
       "station": "C"
     },
     {
+      "unixTimestamp": 1,
+      "customerId": 4,
+      "station": "A"
+    },
+    {
       "unixTimestamp": 2467437,
       "customerId": 1,
       "station": "A"
@@ -48,6 +53,11 @@
     {
       "unixTimestamp": 2469999,
       "customerId": 1,
+      "station": "H"
+    },
+    {
+      "unixTimestamp": 2,
+      "customerId": 4,
       "station": "H"
     },
     {

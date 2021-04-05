@@ -1,6 +1,20 @@
 {
   "customerSummaries": [
     {
+      "customerId": 4,
+      "totalCostInCents": 300,
+      "trips": [
+        {
+          "stationStart": "A",
+          "stationEnd": "H",
+          "startedJourneyAt": 1,
+          "costInCents": 300,
+          "zoneFrom": 1,
+          "zoneTo": 4
+        }
+      ]
+    },
+    {
       "customerId": 2,
       "totalCostInCents": 740,
       "trips": [

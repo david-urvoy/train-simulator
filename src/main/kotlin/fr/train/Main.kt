@@ -1,3 +1,5 @@
+package fr.train
+
 import fr.train.api.parseJson
 import fr.train.spi.computeToOverview
 import java.io.File
